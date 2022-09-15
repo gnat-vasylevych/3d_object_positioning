@@ -1,12 +1,19 @@
 import requests
 import os
 
-if __name__ == "__main__":
-    public_url = "https://storage.googleapis.com/objectron"
+public_url = "https://storage.googleapis.com/objectron"
+
+
+def get_video_ids():
     class_to_download = "cup_annotations"  # there are several classes available. for more info check google objectron
     blob_path = public_url + "/v1/index/" + class_to_download
     video_ids = requests.get(blob_path).text
     video_ids = video_ids.split('\n')  # list of available videos
+    return video_ids
+
+
+if __name__ == "__main__":
+    video_ids = get_video_ids()
 
     download_directory = "cup_annotations"  # directory where to download videos
 
@@ -22,7 +29,7 @@ if __name__ == "__main__":
     os.chdir(path)
 
     # Download all videos in cup test dataset
-    for i in range(1):
+    for i in range(len(video_ids)):
         video_filename = public_url + "/videos/" + video_ids[i] + "/video.MOV"
         annotation_filename = public_url + "/annotations/" + video_ids[i] + ".pbdata"
         video = requests.get(video_filename)
