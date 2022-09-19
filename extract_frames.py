@@ -34,6 +34,8 @@ def grab_frame(video_file, frame_ids: list):
 
 if __name__ == "__main__":
     video_ids = get_video_ids()
+    video_ids = [video for video in video_ids if len(video) != 0]
+
 
     parent_dir = os.getcwd()
     video_directory = "cup_annotations"
@@ -47,13 +49,15 @@ if __name__ == "__main__":
 
     os.chdir(path)
 
-    for i in range(len(video_ids)):
+    i = 0
+    frame = 10
+
+    while i < len(video_ids):
         video_filename = parent_dir + '/' + video_directory + '/' + "{}/video.MOV".format(video_ids[i]).replace('/', '_')
-        frame = 10
         frames = grab_frame(video_filename, [frame])
         im = Image.fromarray(frames[0])
         im.save("{}/frame.png".format(video_ids[i]).replace('/', '_'))
-
-    frame = 10
+        del im
+        i += 1
 
     os.chdir(parent_dir)

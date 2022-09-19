@@ -61,12 +61,12 @@ def build_train_validation_test_dataset():
     video_ids = [video for video in video_ids if len(video) != 0]
     train_video_ids, test_video_ids = train_test_split(video_ids, test_size=0.2, random_state=0)
     train_video_ids, validation_video_ids = train_test_split(train_video_ids, test_size=0.1, random_state=0)
-    TRAIN_LEN = len(train_video_ids)
-    VAL_LEN = len(validation_video_ids)
-    TEST_LEN = len(test_video_ids)
+    TRAIN_LEN = 10#len(train_video_ids)
+    VAL_LEN = 10#len(validation_video_ids)
+    TEST_LEN = 10#len(test_video_ids)
     parent_dir = os.getcwd()
-    annotation_dir = os.path.join(parent_dir, "cup_annotations")
-    frame_dir = os.path.join(parent_dir, "cup_annotations_frames")
+    annotation_dir = os.path.join(parent_dir, "cup_annotations\\")
+    frame_dir = os.path.join(parent_dir, "cup_annotations_frames\\")
     frame_id = 10
 
     def yield_files(frame_filename, annotation_file):
@@ -77,36 +77,43 @@ def build_train_validation_test_dataset():
             frame = np.asarray(image)
             annotation, cat, num_keypoints, types = get_frame_annotation(sequence, frame_id)
 
-            if len(num_keypoints) > 1:
-                return
 
             frame = resize_image(frame, new_size=(224, 224))
             frame = frame.astype('float32') / 255
 
             annotation = np.array(annotation).flatten()
 
-            yield (frame, annotation)
+            return (frame, annotation, num_keypoints)
 
     def train_generator():
         for i in range(TRAIN_LEN):
             frame_filename = frame_dir + "{}/frame.png".format(train_video_ids[i]).replace('/', '_')
             annotation_file = annotation_dir + "{}/annotation.pbdata".format(train_video_ids[i]).replace('/', '_')
 
-            yield_files(frame_filename, annotation_file)
+            frame, annotation, num_keypoints = yield_files(frame_filename, annotation_file)
+
+            if len(num_keypoints) <= 1:
+                yield frame, annotation
 
     def validation_generator():
         for i in range(VAL_LEN):
-            frame_filename = frame_dir + "{}/video.MOV".format(validation_video_ids[i]).replace('/', '_')
+            frame_filename = frame_dir + "{}/frame.png".format(validation_video_ids[i]).replace('/', '_')
             annotation_file = annotation_dir + "{}/annotation.pbdata".format(validation_video_ids[i]).replace('/', '_')
 
-            yield_files(frame_filename, annotation_file)
+            frame, annotation, num_keypoints = yield_files(frame_filename, annotation_file)
+
+            if len(num_keypoints) <= 1:
+                yield frame, annotation
 
     def test_generator():
         for i in range(TEST_LEN):
-            frame_filename = frame_dir + "{}/video.MOV".format(test_video_ids[i]).replace('/', '_')
+            frame_filename = frame_dir + "{}/frame.png".format(test_video_ids[i]).replace('/', '_')
             annotation_file = annotation_dir + "{}/annotation.pbdata".format(test_video_ids[i]).replace('/', '_')
 
-            yield_files(frame_filename, annotation_file)
+            frame, annotation, num_keypoints = yield_files(frame_filename, annotation_file)
+
+            if len(num_keypoints) <= 1:
+                yield frame, annotation
 
     train_dataset = tf.data.Dataset.from_generator(train_generator, output_types=(tf.float32, tf.float32))
     validation_dataset = tf.data.Dataset.from_generator(validation_generator, output_types=(tf.float32, tf.float32))
