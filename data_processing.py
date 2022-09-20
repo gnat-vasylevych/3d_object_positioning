@@ -61,9 +61,9 @@ def build_train_validation_test_dataset():
     video_ids = [video for video in video_ids if len(video) != 0]
     train_video_ids, test_video_ids = train_test_split(video_ids, test_size=0.2, random_state=0)
     train_video_ids, validation_video_ids = train_test_split(train_video_ids, test_size=0.1, random_state=0)
-    TRAIN_LEN = 10#len(train_video_ids)
-    VAL_LEN = 10#len(validation_video_ids)
-    TEST_LEN = 10#len(test_video_ids)
+    TRAIN_LEN = len(train_video_ids)
+    VAL_LEN = len(validation_video_ids)
+    TEST_LEN = len(test_video_ids)
     parent_dir = os.getcwd()
     annotation_dir = os.path.join(parent_dir, "cup_annotations\\")
     frame_dir = os.path.join(parent_dir, "cup_annotations_frames\\")
