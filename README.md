@@ -5,9 +5,20 @@ This is my project as a part of internship in ELEKS. My task was to predict 3D b
 To this end, I chose Google [Objectron](https://github.com/google-research-datasets/Objectron) dataset as my primary data.
 
 ***
-At first, I tried VGG16 model with frozen convolutional layers. After 30 epochs we see it starts overfitting at 7-th epoch.
+Google's annotation provides coordinates of bounding box for each frame. It describes 9 points id 3d coordinate system (8 of a box and 1 in the center of a box), so 27 values total.
+
+At first I build a simple custom model which predicts 27 values to get baseline.
+
+![first_custom_model](https://user-images.githubusercontent.com/76902422/195856121-5c2c8dac-105f-4944-84b7-b8c0201dacf4.png)
+
+The MSE loss value was about 0.1805.
+
+
+Then I tried VGG16 model with frozen convolutional layers.
 
 ![VGG16_froze_weights](https://user-images.githubusercontent.com/76902422/191322750-2e1385f4-e2dd-4b74-819d-e122495ddb6c.png)
+
+The result is much better than baseline - the MSE is 0.022
 
 Then I unfroze weights and trained the model again. 
 
