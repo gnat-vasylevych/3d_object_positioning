@@ -3,6 +3,7 @@
 
 This is my project as a part of internship in ELEKS. My task was to predict 3D bounding boxes for objects on photos. 
 To this end, I chose Google [Objectron](https://github.com/google-research-datasets/Objectron) dataset as my primary data.
+There are several classes available. For simplicity I chose only one - cup class. Also, I train my model only on photos with one cup in it, omitting pictures with two or more cups.
 
 ***
 Google's annotation provides coordinates of bounding box for each frame. It describes 9 points id 3d coordinate system (8 of a box and 1 in the center of a box), so 27 values total.
