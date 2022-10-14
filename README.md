@@ -11,8 +11,8 @@ At first I build a simple custom model which predicts 27 values to get baseline.
 
 ![first_custom_model](https://user-images.githubusercontent.com/76902422/195856121-5c2c8dac-105f-4944-84b7-b8c0201dacf4.png)
 
-The MSE loss value was about 0.1805.
-
+This model produced MSE loss value at about 0.1805
+![image](https://user-images.githubusercontent.com/76902422/195857795-37573da7-8644-4a51-a6b9-6d842035661d.png)
 
 Then I tried VGG16 model with frozen convolutional layers.
 
