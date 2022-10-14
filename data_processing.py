@@ -56,14 +56,19 @@ def resize_image(image, new_size: tuple):
     return np.array(tf.image.resize(image, new_size)).astype(int)
 
 
-def build_train_validation_test_dataset():
+def build_train_validation_test_dataset(size_of_dataset=1):
+    if size_of_dataset < 0 or size_of_dataset > 1:
+        raise ValueError("Size_of_dataset must be in range [0, 1]")
+
     video_ids = get_video_ids()
     video_ids = [video for video in video_ids if len(video) != 0]
     train_video_ids, test_video_ids = train_test_split(video_ids, test_size=0.2, random_state=0)
     train_video_ids, validation_video_ids = train_test_split(train_video_ids, test_size=0.1, random_state=0)
-    TRAIN_LEN = len(train_video_ids)
-    VAL_LEN = len(validation_video_ids)
-    TEST_LEN = len(test_video_ids)
+
+    TRAIN_LEN = int(len(train_video_ids) * size_of_dataset)
+    VAL_LEN = int(len(validation_video_ids) * size_of_dataset)
+    TEST_LEN = int(len(test_video_ids) * size_of_dataset)
+
     parent_dir = os.getcwd()
     annotation_dir = os.path.join(parent_dir, "cup_annotations\\")
     frame_dir = os.path.join(parent_dir, "cup_annotations_frames\\")
