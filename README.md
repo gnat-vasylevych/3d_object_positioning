@@ -26,3 +26,12 @@ Then I unfroze weights and trained the model again.
 ![VGG16_unfroze_weights_15epochs](https://user-images.githubusercontent.com/76902422/194294088-b6561456-5724-484c-93a4-78abcdae7cb0.png)
 
 Unfortunatelly, it didn't help a bit.
+
+***
+
+In the end, I got something like this
+
+![photo](https://user-images.githubusercontent.com/76902422/196091059-839802b0-42c1-40d8-b32d-5d895d9a30b5.png)
+
+![photo2](https://user-images.githubusercontent.com/76902422/196091152-d3550af7-0154-4947-a670-ef5bfc2446b1.png)
+
